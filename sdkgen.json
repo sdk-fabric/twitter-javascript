@@ -1,0 +1,8 @@
+{
+  "type": "client-javascript",
+  "require": {
+    "sdkfabric/twitter": {
+      "target": "./src"
+    }
+  }
+}
