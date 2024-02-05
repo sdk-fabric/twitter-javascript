@@ -15,31 +15,60 @@ import {TweetEntityResponse} from "./TweetEntityResponse";
 
 export class TweetTag extends TagAbstract {
     /**
-     * Returns a variety of information about the Tweet specified by the requested ID or list of IDs.
+     * Creates a Tweet on behalf of an authenticated user.
      *
-     * @returns {Promise<TweetCollectionResponse>}
+     * @returns {Promise<TweetCreateResponse>}
      * @throws {ClientException}
      */
-    public async getAll(ids?: string, expansions?: string, mediaFields?: string, placeFields?: string, pollFields?: string, tweetFields?: string, userFields?: string): Promise<TweetCollectionResponse> {
+    public async create(payload: Tweet): Promise<TweetCreateResponse> {
         const url = this.parser.url('/2/tweets', {
         });
 
         let params: AxiosRequestConfig = {
             url: url,
-            method: 'GET',
+            method: 'POST',
             params: this.parser.query({
-                'ids': ids,
-                'expansions': expansions,
-                'media.fields': mediaFields,
-                'place.fields': placeFields,
-                'poll.fields': pollFields,
-                'tweet.fields': tweetFields,
-                'user.fields': userFields,
+            }),
+            data: payload
+        };
+
+        try {
+            const response = await this.httpClient.request<TweetCreateResponse>(params);
+            return response.data;
+        } catch (error) {
+            if (error instanceof ClientException) {
+                throw error;
+            } else if (axios.isAxiosError(error) && error.response) {
+                switch (error.response.status) {
+                    default:
+                        throw new UnknownStatusCodeException('The server returned an unknown status code');
+                }
+            } else {
+                throw new ClientException('An unknown error occurred: ' + String(error));
+            }
+        }
+    }
+
+    /**
+     * Allows a user or authenticated user ID to delete a Tweet.
+     *
+     * @returns {Promise<TweetDeleteResponse>}
+     * @throws {ClientException}
+     */
+    public async delete(id: string): Promise<TweetDeleteResponse> {
+        const url = this.parser.url('/2/tweets/:id', {
+            'id': id,
+        });
+
+        let params: AxiosRequestConfig = {
+            url: url,
+            method: 'DELETE',
+            params: this.parser.query({
             }),
         };
 
         try {
-            const response = await this.httpClient.request<TweetCollectionResponse>(params);
+            const response = await this.httpClient.request<TweetDeleteResponse>(params);
             return response.data;
         } catch (error) {
             if (error instanceof ClientException) {
@@ -97,60 +126,31 @@ export class TweetTag extends TagAbstract {
     }
 
     /**
-     * Creates a Tweet on behalf of an authenticated user.
+     * Returns a variety of information about the Tweet specified by the requested ID or list of IDs.
      *
-     * @returns {Promise<TweetCreateResponse>}
+     * @returns {Promise<TweetCollectionResponse>}
      * @throws {ClientException}
      */
-    public async create(payload: Tweet): Promise<TweetCreateResponse> {
+    public async getAll(expansions?: string, ids?: string, mediaFields?: string, placeFields?: string, pollFields?: string, tweetFields?: string, userFields?: string): Promise<TweetCollectionResponse> {
         const url = this.parser.url('/2/tweets', {
         });
 
         let params: AxiosRequestConfig = {
             url: url,
-            method: 'POST',
+            method: 'GET',
             params: this.parser.query({
-            }),
-            data: payload
-        };
-
-        try {
-            const response = await this.httpClient.request<TweetCreateResponse>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                switch (error.response.status) {
-                    default:
-                        throw new UnknownStatusCodeException('The server returned an unknown status code');
-                }
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
-        }
-    }
-
-    /**
-     * Allows a user or authenticated user ID to delete a Tweet.
-     *
-     * @returns {Promise<TweetDeleteResponse>}
-     * @throws {ClientException}
-     */
-    public async delete(id: string): Promise<TweetDeleteResponse> {
-        const url = this.parser.url('/2/tweets/:id', {
-            'id': id,
-        });
-
-        let params: AxiosRequestConfig = {
-            url: url,
-            method: 'DELETE',
-            params: this.parser.query({
+                'expansions': expansions,
+                'ids': ids,
+                'media.fields': mediaFields,
+                'place.fields': placeFields,
+                'poll.fields': pollFields,
+                'tweet.fields': tweetFields,
+                'user.fields': userFields,
             }),
         };
 
         try {
-            const response = await this.httpClient.request<TweetDeleteResponse>(params);
+            const response = await this.httpClient.request<TweetCollectionResponse>(params);
             return response.data;
         } catch (error) {
             if (error instanceof ClientException) {
