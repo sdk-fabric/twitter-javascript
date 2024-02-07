@@ -9,11 +9,38 @@ import {HttpBearer} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
 import {TweetTag} from "./TweetTag";
+import {UsageTag} from "./UsageTag";
+import {UserTag} from "./UserTag";
+import {BookmarkTag} from "./BookmarkTag";
 
 export class Client extends ClientAbstract {
     public tweet(): TweetTag
     {
         return new TweetTag(
+            this.httpClient,
+            this.parser
+        );
+    }
+
+    public usage(): UsageTag
+    {
+        return new UsageTag(
+            this.httpClient,
+            this.parser
+        );
+    }
+
+    public user(): UserTag
+    {
+        return new UserTag(
+            this.httpClient,
+            this.parser
+        );
+    }
+
+    public bookmark(): BookmarkTag
+    {
+        return new BookmarkTag(
             this.httpClient,
             this.parser
         );

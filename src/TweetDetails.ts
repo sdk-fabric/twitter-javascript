@@ -4,11 +4,11 @@
  */
 
 export interface TweetDetails {
-    author_id?: string
-    conversation_id?: string
-    created_at?: string
-    edit_history_tweet_ids?: Array<string>
     id?: string
-    in_reply_to_user_id?: string
     text?: string
+    created_at?: string
+    author_id?: string
+    edit_history_tweet_ids?: Array<string>
+    conversation_id?: string
+    in_reply_to_user_id?: string
 }
