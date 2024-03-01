@@ -11,7 +11,7 @@ import {TweetCollectionResponse} from "./TweetCollectionResponse";
 
 export class BookmarkTag extends TagAbstract {
     /**
-     * Allows you to get an authenticated user&#039;s 800 most recent bookmarked Tweets.
+     * Allows you to get an authenticated user's 800 most recent bookmarked Tweets.
      *
      * @returns {Promise<TweetCollectionResponse>}
      * @throws {ClientException}
