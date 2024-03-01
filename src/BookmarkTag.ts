@@ -7,6 +7,7 @@ import axios, {AxiosRequestConfig} from "axios";
 import {TagAbstract} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
+import {Tweet} from "./Tweet";
 import {TweetCollectionResponse} from "./TweetCollectionResponse";
 
 export class BookmarkTag extends TagAbstract {
@@ -38,6 +39,40 @@ export class BookmarkTag extends TagAbstract {
 
         try {
             const response = await this.httpClient.request<TweetCollectionResponse>(params);
+            return response.data;
+        } catch (error) {
+            if (error instanceof ClientException) {
+                throw error;
+            } else if (axios.isAxiosError(error) && error.response) {
+                switch (error.response.status) {
+                    default:
+                        throw new UnknownStatusCodeException('The server returned an unknown status code');
+                }
+            } else {
+                throw new ClientException('An unknown error occurred: ' + String(error));
+            }
+        }
+    }
+
+    /**
+     * @returns {Promise<Tweet>}
+     * @throws {ClientException}
+     */
+    public async create(userId: string, payload: Tweet): Promise<Tweet> {
+        const url = this.parser.url('/2/users/:user_id/bookmarks', {
+            'user_id': userId,
+        });
+
+        let params: AxiosRequestConfig = {
+            url: url,
+            method: 'POST',
+            params: this.parser.query({
+            }),
+            data: payload
+        };
+
+        try {
+            const response = await this.httpClient.request<Tweet>(params);
             return response.data;
         } catch (error) {
             if (error instanceof ClientException) {
