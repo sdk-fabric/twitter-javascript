@@ -12,7 +12,6 @@ import {TweetTag} from "./TweetTag";
 import {UsageTag} from "./UsageTag";
 import {UserTag} from "./UserTag";
 import {BookmarkTag} from "./BookmarkTag";
-import {LikesTag} from "./LikesTag";
 
 export class Client extends ClientAbstract {
     public tweet(): TweetTag
@@ -42,14 +41,6 @@ export class Client extends ClientAbstract {
     public bookmark(): BookmarkTag
     {
         return new BookmarkTag(
-            this.httpClient,
-            this.parser
-        );
-    }
-
-    public likes(): LikesTag
-    {
-        return new LikesTag(
             this.httpClient,
             this.parser
         );
