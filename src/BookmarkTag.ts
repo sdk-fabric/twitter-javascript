@@ -18,7 +18,7 @@ export class BookmarkTag extends TagAbstract {
      * @returns {Promise<TweetCollectionResponse>}
      * @throws {ClientException}
      */
-    public async getAll(userId: string, expansions?: string, maxResults?: string, paginationToken?: string, mediaFields?: string, placeFields?: string, pollFields?: string, tweetFields?: string, userFields?: string): Promise<TweetCollectionResponse> {
+    public async getAll(userId: string, expansions?: string, maxResults?: number, paginationToken?: string, mediaFields?: string, placeFields?: string, pollFields?: string, tweetFields?: string, userFields?: string): Promise<TweetCollectionResponse> {
         const url = this.parser.url('/2/users/:user_id/bookmarks', {
             'user_id': userId,
         });
