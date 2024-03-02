@@ -14,7 +14,7 @@ export class UserTag extends TagAbstract {
      * @returns {Promise<TweetCollectionResponse>}
      * @throws {ClientException}
      */
-    public async getTimeline(userId: string, expansions?: string, tweetFields?: string, userFields?: string, maxResults?: number): Promise<TweetCollectionResponse> {
+    public async getTimeline(userId: string, startTime?: string, endTime?: string, sinceId?: string, untilId?: string, exclude?: string, expansions?: string, maxResults?: number, paginationToken?: string, mediaFields?: string, placeFields?: string, pollFields?: string, tweetFields?: string, userFields?: string): Promise<TweetCollectionResponse> {
         const url = this.parser.url('/2/users/:user_id/timelines/reverse_chronological', {
             'user_id': userId,
         });
@@ -23,10 +23,19 @@ export class UserTag extends TagAbstract {
             url: url,
             method: 'GET',
             params: this.parser.query({
+                'start_time': startTime,
+                'end_time': endTime,
+                'since_id': sinceId,
+                'until_id': untilId,
+                'exclude': exclude,
                 'expansions': expansions,
+                'max_results': maxResults,
+                'pagination_token': paginationToken,
+                'media.fields': mediaFields,
+                'place.fields': placeFields,
+                'poll.fields': pollFields,
                 'tweet.fields': tweetFields,
                 'user.fields': userFields,
-                'max_results': maxResults,
             }),
         };
 
