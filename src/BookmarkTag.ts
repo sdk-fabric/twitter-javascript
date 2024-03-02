@@ -8,7 +8,7 @@ import {TagAbstract} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
 import {BookmarkCreate} from "./BookmarkCreate";
-import {BookmarkCreateResponse} from "./BookmarkCreateResponse";
+import {BookmarkResponse} from "./BookmarkResponse";
 import {TweetCollectionResponse} from "./TweetCollectionResponse";
 
 export class BookmarkTag extends TagAbstract {
@@ -18,7 +18,7 @@ export class BookmarkTag extends TagAbstract {
      * @returns {Promise<TweetCollectionResponse>}
      * @throws {ClientException}
      */
-    public async getAll(userId: string, expansions?: string, maxResults?: string, paginationToken?: string, mediaFields?: string, placeFields?: string, pollFields?: string, tweetFields?: string, userFields?: string): Promise<TweetCollectionResponse> {
+    public async getAll(userId: string, expansions?: string, maxResults?: number, paginationToken?: string, mediaFields?: string, placeFields?: string, pollFields?: string, tweetFields?: string, userFields?: string): Promise<TweetCollectionResponse> {
         const url = this.parser.url('/2/users/:user_id/bookmarks', {
             'user_id': userId,
         });
@@ -56,10 +56,10 @@ export class BookmarkTag extends TagAbstract {
     }
 
     /**
-     * @returns {Promise<BookmarkCreateResponse>}
+     * @returns {Promise<BookmarkResponse>}
      * @throws {ClientException}
      */
-    public async create(userId: string, payload: BookmarkCreate): Promise<BookmarkCreateResponse> {
+    public async create(userId: string, payload: BookmarkCreate): Promise<BookmarkResponse> {
         const url = this.parser.url('/2/users/:user_id/bookmarks', {
             'user_id': userId,
         });
@@ -73,7 +73,41 @@ export class BookmarkTag extends TagAbstract {
         };
 
         try {
-            const response = await this.httpClient.request<BookmarkCreateResponse>(params);
+            const response = await this.httpClient.request<BookmarkResponse>(params);
+            return response.data;
+        } catch (error) {
+            if (error instanceof ClientException) {
+                throw error;
+            } else if (axios.isAxiosError(error) && error.response) {
+                switch (error.response.status) {
+                    default:
+                        throw new UnknownStatusCodeException('The server returned an unknown status code');
+                }
+            } else {
+                throw new ClientException('An unknown error occurred: ' + String(error));
+            }
+        }
+    }
+
+    /**
+     * @returns {Promise<BookmarkResponse>}
+     * @throws {ClientException}
+     */
+    public async delete(userId: string, tweetId: string): Promise<BookmarkResponse> {
+        const url = this.parser.url('/2/users/:user_id/bookmarks/:tweet_id', {
+            'user_id': userId,
+            'tweet_id': tweetId,
+        });
+
+        let params: AxiosRequestConfig = {
+            url: url,
+            method: 'DELETE',
+            params: this.parser.query({
+            }),
+        };
+
+        try {
+            const response = await this.httpClient.request<BookmarkResponse>(params);
             return response.data;
         } catch (error) {
             if (error instanceof ClientException) {
