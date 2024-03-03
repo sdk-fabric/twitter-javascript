@@ -7,6 +7,8 @@ import axios, {AxiosRequestConfig} from "axios";
 import {TagAbstract} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
+import {HideReplyResponse} from "./HideReplyResponse";
+import {HideReplyUpdate} from "./HideReplyUpdate";
 import {Tweet} from "./Tweet";
 import {TweetCollectionResponse} from "./TweetCollectionResponse";
 import {TweetCreateResponse} from "./TweetCreateResponse";
@@ -151,6 +153,42 @@ export class TweetTag extends TagAbstract {
 
         try {
             const response = await this.httpClient.request<TweetDeleteResponse>(params);
+            return response.data;
+        } catch (error) {
+            if (error instanceof ClientException) {
+                throw error;
+            } else if (axios.isAxiosError(error) && error.response) {
+                switch (error.response.status) {
+                    default:
+                        throw new UnknownStatusCodeException('The server returned an unknown status code');
+                }
+            } else {
+                throw new ClientException('An unknown error occurred: ' + String(error));
+            }
+        }
+    }
+
+    /**
+     * Hides or unhides a reply to a Tweet.
+     *
+     * @returns {Promise<HideReplyResponse>}
+     * @throws {ClientException}
+     */
+    public async hideReply(tweetId: string, payload: HideReplyUpdate): Promise<HideReplyResponse> {
+        const url = this.parser.url('/2/tweets/:tweet_id/hidden', {
+            'tweet_id': tweetId,
+        });
+
+        let params: AxiosRequestConfig = {
+            url: url,
+            method: 'PUT',
+            params: this.parser.query({
+            }),
+            data: payload
+        };
+
+        try {
+            const response = await this.httpClient.request<HideReplyResponse>(params);
             return response.data;
         } catch (error) {
             if (error instanceof ClientException) {
