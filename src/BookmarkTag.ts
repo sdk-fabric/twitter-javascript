@@ -7,8 +7,8 @@ import axios, {AxiosRequestConfig} from "axios";
 import {TagAbstract} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
-import {BookmarkCreate} from "./BookmarkCreate";
 import {BookmarkResponse} from "./BookmarkResponse";
+import {SingleTweet} from "./SingleTweet";
 import {TweetCollectionResponse} from "./TweetCollectionResponse";
 
 export class BookmarkTag extends TagAbstract {
@@ -59,7 +59,7 @@ export class BookmarkTag extends TagAbstract {
      * @returns {Promise<BookmarkResponse>}
      * @throws {ClientException}
      */
-    public async create(userId: string, payload: BookmarkCreate): Promise<BookmarkResponse> {
+    public async create(userId: string, payload: SingleTweet): Promise<BookmarkResponse> {
         const url = this.parser.url('/2/users/:user_id/bookmarks', {
             'user_id': userId,
         });
