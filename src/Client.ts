@@ -14,6 +14,7 @@ import {UserTag} from "./UserTag";
 import {BookmarkTag} from "./BookmarkTag";
 import {SearchTag} from "./SearchTag";
 import {QuoteTag} from "./QuoteTag";
+import {TrendsTag} from "./TrendsTag";
 
 export class Client extends ClientAbstract {
     public tweet(): TweetTag
@@ -59,6 +60,14 @@ export class Client extends ClientAbstract {
     public quote(): QuoteTag
     {
         return new QuoteTag(
+            this.httpClient,
+            this.parser
+        );
+    }
+
+    public trends(): TrendsTag
+    {
+        return new TrendsTag(
             this.httpClient,
             this.parser
         );

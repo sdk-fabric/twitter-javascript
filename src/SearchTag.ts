@@ -35,7 +35,8 @@ export class SearchTag extends TagAbstract {
                 'poll.fields': pollFields,
                 'tweet.fields': tweetFields,
                 'user.fields': userFields,
-            }),
+            }, [
+            ]),
         };
 
         try {

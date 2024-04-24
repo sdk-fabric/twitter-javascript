@@ -37,7 +37,8 @@ export class TweetTag extends TagAbstract {
                 'poll.fields': pollFields,
                 'tweet.fields': tweetFields,
                 'user.fields': userFields,
-            }),
+            }, [
+            ]),
         };
 
         try {
@@ -78,7 +79,8 @@ export class TweetTag extends TagAbstract {
                 'poll.fields': pollFields,
                 'tweet.fields': tweetFields,
                 'user.fields': userFields,
-            }),
+            }, [
+            ]),
         };
 
         try {
@@ -112,7 +114,8 @@ export class TweetTag extends TagAbstract {
             url: url,
             method: 'POST',
             params: this.parser.query({
-            }),
+            }, [
+            ]),
             data: payload
         };
 
@@ -148,7 +151,8 @@ export class TweetTag extends TagAbstract {
             url: url,
             method: 'DELETE',
             params: this.parser.query({
-            }),
+            }, [
+            ]),
         };
 
         try {
@@ -183,7 +187,8 @@ export class TweetTag extends TagAbstract {
             url: url,
             method: 'PUT',
             params: this.parser.query({
-            }),
+            }, [
+            ]),
             data: payload
         };
 
