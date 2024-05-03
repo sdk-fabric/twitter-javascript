@@ -7,6 +7,7 @@ import axios, {AxiosRequestConfig} from "axios";
 import {TagAbstract} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
+import {Fields} from "./Fields";
 import {TweetCollectionResponse} from "./TweetCollectionResponse";
 
 export class SearchTag extends TagAbstract {
@@ -14,7 +15,7 @@ export class SearchTag extends TagAbstract {
      * @returns {Promise<TweetCollectionResponse>}
      * @throws {ClientException}
      */
-    public async getRecent(query?: string, startTime?: string, endTime?: string, sinceId?: string, untilId?: string, sortOrder?: string, expansions?: string, maxResults?: number, mediaFields?: string, placeFields?: string, pollFields?: string, tweetFields?: string, userFields?: string): Promise<TweetCollectionResponse> {
+    public async getRecent(query?: string, startTime?: string, endTime?: string, sinceId?: string, untilId?: string, sortOrder?: string, expansions?: string, maxResults?: number, fields?: Fields): Promise<TweetCollectionResponse> {
         const url = this.parser.url('/2/tweets/search/recent', {
         });
 
@@ -30,12 +31,9 @@ export class SearchTag extends TagAbstract {
                 'sort_order': sortOrder,
                 'expansions': expansions,
                 'max_results': maxResults,
-                'media.fields': mediaFields,
-                'place.fields': placeFields,
-                'poll.fields': pollFields,
-                'tweet.fields': tweetFields,
-                'user.fields': userFields,
+                'fields': fields,
             }, [
+                'fields',
             ]),
         };
 

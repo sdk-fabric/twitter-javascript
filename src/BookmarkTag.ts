@@ -8,6 +8,7 @@ import {TagAbstract} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
 import {BookmarkResponse} from "./BookmarkResponse";
+import {Fields} from "./Fields";
 import {SingleTweet} from "./SingleTweet";
 import {TweetCollectionResponse} from "./TweetCollectionResponse";
 
@@ -18,7 +19,7 @@ export class BookmarkTag extends TagAbstract {
      * @returns {Promise<TweetCollectionResponse>}
      * @throws {ClientException}
      */
-    public async getAll(userId: string, expansions?: string, maxResults?: number, paginationToken?: string, mediaFields?: string, placeFields?: string, pollFields?: string, tweetFields?: string, userFields?: string): Promise<TweetCollectionResponse> {
+    public async getAll(userId: string, expansions?: string, maxResults?: number, paginationToken?: string, fields?: Fields): Promise<TweetCollectionResponse> {
         const url = this.parser.url('/2/users/:user_id/bookmarks', {
             'user_id': userId,
         });
@@ -30,12 +31,9 @@ export class BookmarkTag extends TagAbstract {
                 'expansions': expansions,
                 'max_results': maxResults,
                 'pagination_token': paginationToken,
-                'media.fields': mediaFields,
-                'place.fields': placeFields,
-                'poll.fields': pollFields,
-                'tweet.fields': tweetFields,
-                'user.fields': userFields,
+                'fields': fields,
             }, [
+                'fields',
             ]),
         };
 

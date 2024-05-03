@@ -7,6 +7,7 @@ import axios, {AxiosRequestConfig} from "axios";
 import {TagAbstract} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
+import {Fields} from "./Fields";
 import {TweetCollectionResponse} from "./TweetCollectionResponse";
 
 export class QuoteTag extends TagAbstract {
@@ -16,7 +17,7 @@ export class QuoteTag extends TagAbstract {
      * @returns {Promise<TweetCollectionResponse>}
      * @throws {ClientException}
      */
-    public async getAll(tweetId: string, exclude?: string, expansions?: string, maxResults?: number, paginationToken?: string, mediaFields?: string, placeFields?: string, pollFields?: string, tweetFields?: string, userFields?: string): Promise<TweetCollectionResponse> {
+    public async getAll(tweetId: string, exclude?: string, expansions?: string, maxResults?: number, paginationToken?: string, fields?: Fields): Promise<TweetCollectionResponse> {
         const url = this.parser.url('/2/tweets/:tweet_id/quote_tweets', {
             'tweet_id': tweetId,
         });
@@ -29,12 +30,9 @@ export class QuoteTag extends TagAbstract {
                 'expansions': expansions,
                 'max_results': maxResults,
                 'pagination_token': paginationToken,
-                'media.fields': mediaFields,
-                'place.fields': placeFields,
-                'poll.fields': pollFields,
-                'tweet.fields': tweetFields,
-                'user.fields': userFields,
+                'fields': fields,
             }, [
+                'fields',
             ]),
         };
 

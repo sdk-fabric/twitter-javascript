@@ -7,6 +7,7 @@ import axios, {AxiosRequestConfig} from "axios";
 import {TagAbstract} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
+import {Fields} from "./Fields";
 import {LikeResponse} from "./LikeResponse";
 import {SingleTweet} from "./SingleTweet";
 import {TweetCollectionResponse} from "./TweetCollectionResponse";
@@ -16,7 +17,7 @@ export class UserTag extends TagAbstract {
      * @returns {Promise<TweetCollectionResponse>}
      * @throws {ClientException}
      */
-    public async getTimeline(userId: string, startTime?: string, endTime?: string, sinceId?: string, untilId?: string, exclude?: string, expansions?: string, maxResults?: number, paginationToken?: string, mediaFields?: string, placeFields?: string, pollFields?: string, tweetFields?: string, userFields?: string): Promise<TweetCollectionResponse> {
+    public async getTimeline(userId: string, startTime?: string, endTime?: string, sinceId?: string, untilId?: string, exclude?: string, expansions?: string, maxResults?: number, paginationToken?: string, fields?: Fields): Promise<TweetCollectionResponse> {
         const url = this.parser.url('/2/users/:user_id/timelines/reverse_chronological', {
             'user_id': userId,
         });
@@ -33,12 +34,9 @@ export class UserTag extends TagAbstract {
                 'expansions': expansions,
                 'max_results': maxResults,
                 'pagination_token': paginationToken,
-                'media.fields': mediaFields,
-                'place.fields': placeFields,
-                'poll.fields': pollFields,
-                'tweet.fields': tweetFields,
-                'user.fields': userFields,
+                'fields': fields,
             }, [
+                'fields',
             ]),
         };
 
@@ -65,7 +63,7 @@ export class UserTag extends TagAbstract {
      * @returns {Promise<TweetCollectionResponse>}
      * @throws {ClientException}
      */
-    public async getLikedTweets(userId: string, expansions?: string, maxResults?: number, paginationToken?: string, mediaFields?: string, placeFields?: string, pollFields?: string, tweetFields?: string, userFields?: string): Promise<TweetCollectionResponse> {
+    public async getLikedTweets(userId: string, expansions?: string, maxResults?: number, paginationToken?: string, fields?: Fields): Promise<TweetCollectionResponse> {
         const url = this.parser.url('/2/users/:user_id/liked_tweets', {
             'user_id': userId,
         });
@@ -77,12 +75,9 @@ export class UserTag extends TagAbstract {
                 'expansions': expansions,
                 'max_results': maxResults,
                 'pagination_token': paginationToken,
-                'media.fields': mediaFields,
-                'place.fields': placeFields,
-                'poll.fields': pollFields,
-                'tweet.fields': tweetFields,
-                'user.fields': userFields,
+                'fields': fields,
             }, [
+                'fields',
             ]),
         };
 

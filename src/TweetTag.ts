@@ -7,6 +7,7 @@ import axios, {AxiosRequestConfig} from "axios";
 import {TagAbstract} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
+import {Fields} from "./Fields";
 import {HideReplyResponse} from "./HideReplyResponse";
 import {HideReplyUpdate} from "./HideReplyUpdate";
 import {Tweet} from "./Tweet";
@@ -22,7 +23,7 @@ export class TweetTag extends TagAbstract {
      * @returns {Promise<TweetCollectionResponse>}
      * @throws {ClientException}
      */
-    public async getAll(ids?: string, expansions?: string, mediaFields?: string, placeFields?: string, pollFields?: string, tweetFields?: string, userFields?: string): Promise<TweetCollectionResponse> {
+    public async getAll(ids?: string, expansions?: string, fields?: Fields): Promise<TweetCollectionResponse> {
         const url = this.parser.url('/2/tweets', {
         });
 
@@ -32,12 +33,9 @@ export class TweetTag extends TagAbstract {
             params: this.parser.query({
                 'ids': ids,
                 'expansions': expansions,
-                'media.fields': mediaFields,
-                'place.fields': placeFields,
-                'poll.fields': pollFields,
-                'tweet.fields': tweetFields,
-                'user.fields': userFields,
+                'fields': fields,
             }, [
+                'fields',
             ]),
         };
 
@@ -64,7 +62,7 @@ export class TweetTag extends TagAbstract {
      * @returns {Promise<TweetEntityResponse>}
      * @throws {ClientException}
      */
-    public async get(tweetId: string, expansions?: string, mediaFields?: string, placeFields?: string, pollFields?: string, tweetFields?: string, userFields?: string): Promise<TweetEntityResponse> {
+    public async get(tweetId: string, expansions?: string, fields?: Fields): Promise<TweetEntityResponse> {
         const url = this.parser.url('/2/tweets/:tweet_id', {
             'tweet_id': tweetId,
         });
@@ -74,12 +72,9 @@ export class TweetTag extends TagAbstract {
             method: 'GET',
             params: this.parser.query({
                 'expansions': expansions,
-                'media.fields': mediaFields,
-                'place.fields': placeFields,
-                'poll.fields': pollFields,
-                'tweet.fields': tweetFields,
-                'user.fields': userFields,
+                'fields': fields,
             }, [
+                'fields',
             ]),
         };
 
