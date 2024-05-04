@@ -3,7 +3,7 @@
  * {@link https://sdkgen.app}
  */
 
-import {LikeResponseMessage} from "./LikeResponseMessage";
+import {Like} from "./Like";
 export interface LikeResponse {
-    data?: LikeResponseMessage
+    data?: Like
 }

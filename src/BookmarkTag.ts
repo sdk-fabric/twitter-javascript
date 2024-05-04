@@ -10,16 +10,16 @@ import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 import {BookmarkResponse} from "./BookmarkResponse";
 import {Fields} from "./Fields";
 import {SingleTweet} from "./SingleTweet";
-import {TweetCollectionResponse} from "./TweetCollectionResponse";
+import {TweetCollection} from "./TweetCollection";
 
 export class BookmarkTag extends TagAbstract {
     /**
      * Allows you to get an authenticated user's 800 most recent bookmarked Tweets.
      *
-     * @returns {Promise<TweetCollectionResponse>}
+     * @returns {Promise<TweetCollection>}
      * @throws {ClientException}
      */
-    public async getAll(userId: string, expansions?: string, maxResults?: number, paginationToken?: string, fields?: Fields): Promise<TweetCollectionResponse> {
+    public async getAll(userId: string, expansions?: string, maxResults?: number, paginationToken?: string, fields?: Fields): Promise<TweetCollection> {
         const url = this.parser.url('/2/users/:user_id/bookmarks', {
             'user_id': userId,
         });
@@ -38,7 +38,7 @@ export class BookmarkTag extends TagAbstract {
         };
 
         try {
-            const response = await this.httpClient.request<TweetCollectionResponse>(params);
+            const response = await this.httpClient.request<TweetCollection>(params);
             return response.data;
         } catch (error) {
             if (error instanceof ClientException) {

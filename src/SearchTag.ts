@@ -8,14 +8,14 @@ import {TagAbstract} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
 import {Fields} from "./Fields";
-import {TweetCollectionResponse} from "./TweetCollectionResponse";
+import {TweetCollection} from "./TweetCollection";
 
 export class SearchTag extends TagAbstract {
     /**
-     * @returns {Promise<TweetCollectionResponse>}
+     * @returns {Promise<TweetCollection>}
      * @throws {ClientException}
      */
-    public async getRecent(query?: string, startTime?: string, endTime?: string, sinceId?: string, untilId?: string, sortOrder?: string, expansions?: string, maxResults?: number, fields?: Fields): Promise<TweetCollectionResponse> {
+    public async getRecent(query?: string, startTime?: string, endTime?: string, sinceId?: string, untilId?: string, sortOrder?: string, expansions?: string, maxResults?: number, fields?: Fields): Promise<TweetCollection> {
         const url = this.parser.url('/2/tweets/search/recent', {
         });
 
@@ -38,7 +38,7 @@ export class SearchTag extends TagAbstract {
         };
 
         try {
-            const response = await this.httpClient.request<TweetCollectionResponse>(params);
+            const response = await this.httpClient.request<TweetCollection>(params);
             return response.data;
         } catch (error) {
             if (error instanceof ClientException) {

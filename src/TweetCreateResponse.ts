@@ -3,7 +3,7 @@
  * {@link https://sdkgen.app}
  */
 
-import {TweetCreateResponseMessage} from "./TweetCreateResponseMessage";
+import {TweetCreate} from "./TweetCreate";
 export interface TweetCreateResponse {
-    data?: TweetCreateResponseMessage
+    data?: TweetCreate
 }

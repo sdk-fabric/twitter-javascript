@@ -3,7 +3,7 @@
  * {@link https://sdkgen.app}
  */
 
-import {TweetDeleteResponseMessage} from "./TweetDeleteResponseMessage";
+import {TweetDelete} from "./TweetDelete";
 export interface TweetDeleteResponse {
-    data?: TweetDeleteResponseMessage
+    data?: TweetDelete
 }

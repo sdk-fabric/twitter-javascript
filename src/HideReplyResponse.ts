@@ -3,7 +3,7 @@
  * {@link https://sdkgen.app}
  */
 
-import {HideReplyUpdate} from "./HideReplyUpdate";
+import {HideReply} from "./HideReply";
 export interface HideReplyResponse {
-    data?: HideReplyUpdate
+    data?: HideReply
 }

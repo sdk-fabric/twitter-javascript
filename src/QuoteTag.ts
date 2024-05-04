@@ -8,16 +8,16 @@ import {TagAbstract} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
 import {Fields} from "./Fields";
-import {TweetCollectionResponse} from "./TweetCollectionResponse";
+import {TweetCollection} from "./TweetCollection";
 
 export class QuoteTag extends TagAbstract {
     /**
      * Returns Quote Tweets for a Tweet specified by the requested Tweet ID.
      *
-     * @returns {Promise<TweetCollectionResponse>}
+     * @returns {Promise<TweetCollection>}
      * @throws {ClientException}
      */
-    public async getAll(tweetId: string, exclude?: string, expansions?: string, maxResults?: number, paginationToken?: string, fields?: Fields): Promise<TweetCollectionResponse> {
+    public async getAll(tweetId: string, exclude?: string, expansions?: string, maxResults?: number, paginationToken?: string, fields?: Fields): Promise<TweetCollection> {
         const url = this.parser.url('/2/tweets/:tweet_id/quote_tweets', {
             'tweet_id': tweetId,
         });
@@ -37,7 +37,7 @@ export class QuoteTag extends TagAbstract {
         };
 
         try {
-            const response = await this.httpClient.request<TweetCollectionResponse>(params);
+            const response = await this.httpClient.request<TweetCollection>(params);
             return response.data;
         } catch (error) {
             if (error instanceof ClientException) {

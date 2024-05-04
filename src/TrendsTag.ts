@@ -7,16 +7,16 @@ import axios, {AxiosRequestConfig} from "axios";
 import {TagAbstract} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
-import {TrendsResponse} from "./TrendsResponse";
+import {TrendCollection} from "./TrendCollection";
 
 export class TrendsTag extends TagAbstract {
     /**
      * The Trends lookup endpoint allow developers to get the Trends for a location, specified using the where-on-earth id (WOEID).
      *
-     * @returns {Promise<TrendsResponse>}
+     * @returns {Promise<TrendCollection>}
      * @throws {ClientException}
      */
-    public async byWoeid(woeid: string): Promise<TrendsResponse> {
+    public async getByWoeid(woeid: string): Promise<TrendCollection> {
         const url = this.parser.url('/2/trends/by/woeid/:woeid', {
             'woeid': woeid,
         });
@@ -30,7 +30,7 @@ export class TrendsTag extends TagAbstract {
         };
 
         try {
-            const response = await this.httpClient.request<TrendsResponse>(params);
+            const response = await this.httpClient.request<TrendCollection>(params);
             return response.data;
         } catch (error) {
             if (error instanceof ClientException) {

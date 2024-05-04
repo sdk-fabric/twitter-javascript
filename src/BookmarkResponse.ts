@@ -3,7 +3,7 @@
  * {@link https://sdkgen.app}
  */
 
-import {BookmarkResponseMessage} from "./BookmarkResponseMessage";
+import {Bookmark} from "./Bookmark";
 export interface BookmarkResponse {
-    data?: BookmarkResponseMessage
+    data?: Bookmark
 }

@@ -8,22 +8,22 @@ import {TagAbstract} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
 import {Fields} from "./Fields";
+import {HideReply} from "./HideReply";
 import {HideReplyResponse} from "./HideReplyResponse";
-import {HideReplyUpdate} from "./HideReplyUpdate";
 import {Tweet} from "./Tweet";
-import {TweetCollectionResponse} from "./TweetCollectionResponse";
+import {TweetCollection} from "./TweetCollection";
 import {TweetCreateResponse} from "./TweetCreateResponse";
 import {TweetDeleteResponse} from "./TweetDeleteResponse";
-import {TweetEntityResponse} from "./TweetEntityResponse";
+import {TweetEntity} from "./TweetEntity";
 
 export class TweetTag extends TagAbstract {
     /**
      * Returns a variety of information about the Tweet specified by the requested ID or list of IDs.
      *
-     * @returns {Promise<TweetCollectionResponse>}
+     * @returns {Promise<TweetCollection>}
      * @throws {ClientException}
      */
-    public async getAll(ids?: string, expansions?: string, fields?: Fields): Promise<TweetCollectionResponse> {
+    public async getAll(ids?: string, expansions?: string, fields?: Fields): Promise<TweetCollection> {
         const url = this.parser.url('/2/tweets', {
         });
 
@@ -40,7 +40,7 @@ export class TweetTag extends TagAbstract {
         };
 
         try {
-            const response = await this.httpClient.request<TweetCollectionResponse>(params);
+            const response = await this.httpClient.request<TweetCollection>(params);
             return response.data;
         } catch (error) {
             if (error instanceof ClientException) {
@@ -59,10 +59,10 @@ export class TweetTag extends TagAbstract {
     /**
      * Returns a variety of information about a single Tweet specified by the requested ID.
      *
-     * @returns {Promise<TweetEntityResponse>}
+     * @returns {Promise<TweetEntity>}
      * @throws {ClientException}
      */
-    public async get(tweetId: string, expansions?: string, fields?: Fields): Promise<TweetEntityResponse> {
+    public async get(tweetId: string, expansions?: string, fields?: Fields): Promise<TweetEntity> {
         const url = this.parser.url('/2/tweets/:tweet_id', {
             'tweet_id': tweetId,
         });
@@ -79,7 +79,7 @@ export class TweetTag extends TagAbstract {
         };
 
         try {
-            const response = await this.httpClient.request<TweetEntityResponse>(params);
+            const response = await this.httpClient.request<TweetEntity>(params);
             return response.data;
         } catch (error) {
             if (error instanceof ClientException) {
@@ -173,7 +173,7 @@ export class TweetTag extends TagAbstract {
      * @returns {Promise<HideReplyResponse>}
      * @throws {ClientException}
      */
-    public async hideReply(tweetId: string, payload: HideReplyUpdate): Promise<HideReplyResponse> {
+    public async hideReply(tweetId: string, payload: HideReply): Promise<HideReplyResponse> {
         const url = this.parser.url('/2/tweets/:tweet_id/hidden', {
             'tweet_id': tweetId,
         });

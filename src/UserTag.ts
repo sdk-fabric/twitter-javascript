@@ -10,14 +10,15 @@ import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 import {Fields} from "./Fields";
 import {LikeResponse} from "./LikeResponse";
 import {SingleTweet} from "./SingleTweet";
-import {TweetCollectionResponse} from "./TweetCollectionResponse";
+import {TweetCollection} from "./TweetCollection";
+import {UserCollection} from "./UserCollection";
 
 export class UserTag extends TagAbstract {
     /**
-     * @returns {Promise<TweetCollectionResponse>}
+     * @returns {Promise<TweetCollection>}
      * @throws {ClientException}
      */
-    public async getTimeline(userId: string, startTime?: string, endTime?: string, sinceId?: string, untilId?: string, exclude?: string, expansions?: string, maxResults?: number, paginationToken?: string, fields?: Fields): Promise<TweetCollectionResponse> {
+    public async getTimeline(userId: string, startTime?: string, endTime?: string, sinceId?: string, untilId?: string, exclude?: string, expansions?: string, maxResults?: number, paginationToken?: string, fields?: Fields): Promise<TweetCollection> {
         const url = this.parser.url('/2/users/:user_id/timelines/reverse_chronological', {
             'user_id': userId,
         });
@@ -41,7 +42,7 @@ export class UserTag extends TagAbstract {
         };
 
         try {
-            const response = await this.httpClient.request<TweetCollectionResponse>(params);
+            const response = await this.httpClient.request<TweetCollection>(params);
             return response.data;
         } catch (error) {
             if (error instanceof ClientException) {
@@ -60,10 +61,10 @@ export class UserTag extends TagAbstract {
     /**
      * Tweets liked by a user
      *
-     * @returns {Promise<TweetCollectionResponse>}
+     * @returns {Promise<TweetCollection>}
      * @throws {ClientException}
      */
-    public async getLikedTweets(userId: string, expansions?: string, maxResults?: number, paginationToken?: string, fields?: Fields): Promise<TweetCollectionResponse> {
+    public async getLikedTweets(userId: string, expansions?: string, maxResults?: number, paginationToken?: string, fields?: Fields): Promise<TweetCollection> {
         const url = this.parser.url('/2/users/:user_id/liked_tweets', {
             'user_id': userId,
         });
@@ -82,7 +83,7 @@ export class UserTag extends TagAbstract {
         };
 
         try {
-            const response = await this.httpClient.request<TweetCollectionResponse>(params);
+            const response = await this.httpClient.request<TweetCollection>(params);
             return response.data;
         } catch (error) {
             if (error instanceof ClientException) {
@@ -153,6 +154,43 @@ export class UserTag extends TagAbstract {
 
         try {
             const response = await this.httpClient.request<LikeResponse>(params);
+            return response.data;
+        } catch (error) {
+            if (error instanceof ClientException) {
+                throw error;
+            } else if (axios.isAxiosError(error) && error.response) {
+                switch (error.response.status) {
+                    default:
+                        throw new UnknownStatusCodeException('The server returned an unknown status code');
+                }
+            } else {
+                throw new ClientException('An unknown error occurred: ' + String(error));
+            }
+        }
+    }
+
+    /**
+     * @returns {Promise<UserCollection>}
+     * @throws {ClientException}
+     */
+    public async findByName(usernames?: string, expansions?: string, fields?: Fields): Promise<UserCollection> {
+        const url = this.parser.url('/2/users/by', {
+        });
+
+        let params: AxiosRequestConfig = {
+            url: url,
+            method: 'GET',
+            params: this.parser.query({
+                'usernames': usernames,
+                'expansions': expansions,
+                'fields': fields,
+            }, [
+                'fields',
+            ]),
+        };
+
+        try {
+            const response = await this.httpClient.request<UserCollection>(params);
             return response.data;
         } catch (error) {
             if (error instanceof ClientException) {
