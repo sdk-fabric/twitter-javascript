@@ -16,11 +16,13 @@ the code.
 
 ## Usage
 
-The following example shows how you can use the client:
+The following example shows how you initialize the client:
 
 ```typescript
-const credentials = new HttpBearer('[access_token]');
-const client = Client::build(credentials);
+const client = Client::build('[access_token]');
 
 // @TODO use the client
 ```
+
+You can find all available operations and types at:
+https://app.typehub.cloud/d/sdkfabric/twitter
