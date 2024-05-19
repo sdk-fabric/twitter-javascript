@@ -15,6 +15,7 @@ import {TweetCollection} from "./TweetCollection";
 import {TweetCreateResponse} from "./TweetCreateResponse";
 import {TweetDeleteResponse} from "./TweetDeleteResponse";
 import {TweetEntity} from "./TweetEntity";
+import {UserCollection} from "./UserCollection";
 
 export class TweetTag extends TagAbstract {
     /**
@@ -189,6 +190,45 @@ export class TweetTag extends TagAbstract {
 
         try {
             const response = await this.httpClient.request<HideReplyResponse>(params);
+            return response.data;
+        } catch (error) {
+            if (error instanceof ClientException) {
+                throw error;
+            } else if (axios.isAxiosError(error) && error.response) {
+                switch (error.response.status) {
+                    default:
+                        throw new UnknownStatusCodeException('The server returned an unknown status code');
+                }
+            } else {
+                throw new ClientException('An unknown error occurred: ' + String(error));
+            }
+        }
+    }
+
+    /**
+     * Allows you to get information about a Tweet’s liking users.
+     *
+     * @returns {Promise<UserCollection>}
+     * @throws {ClientException}
+     */
+    public async getLikingUsers(tweetId: string, expansions?: string, maxResults?: number, paginationToken?: string): Promise<UserCollection> {
+        const url = this.parser.url('/2/tweets/:tweet_id/liking_users', {
+            'tweet_id': tweetId,
+        });
+
+        let params: AxiosRequestConfig = {
+            url: url,
+            method: 'GET',
+            params: this.parser.query({
+                'expansions': expansions,
+                'max_results': maxResults,
+                'pagination_token': paginationToken,
+            }, [
+            ]),
+        };
+
+        try {
+            const response = await this.httpClient.request<UserCollection>(params);
             return response.data;
         } catch (error) {
             if (error instanceof ClientException) {

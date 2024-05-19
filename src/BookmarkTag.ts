@@ -19,7 +19,7 @@ export class BookmarkTag extends TagAbstract {
      * @returns {Promise<TweetCollection>}
      * @throws {ClientException}
      */
-    public async getAll(userId: string, expansions?: string, maxResults?: number, paginationToken?: string, fields?: Fields): Promise<TweetCollection> {
+    public async getAll(userId: string, expansions?: string, paginationToken?: string, fields?: Fields): Promise<TweetCollection> {
         const url = this.parser.url('/2/users/:user_id/bookmarks', {
             'user_id': userId,
         });
@@ -29,7 +29,6 @@ export class BookmarkTag extends TagAbstract {
             method: 'GET',
             params: this.parser.query({
                 'expansions': expansions,
-                'max_results': maxResults,
                 'pagination_token': paginationToken,
                 'fields': fields,
             }, [

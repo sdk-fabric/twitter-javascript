@@ -8,6 +8,7 @@ import {TagAbstract} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
 import {Fields} from "./Fields";
+import {Pagination} from "./Pagination";
 import {TweetCollection} from "./TweetCollection";
 
 export class SearchTag extends TagAbstract {
@@ -15,7 +16,7 @@ export class SearchTag extends TagAbstract {
      * @returns {Promise<TweetCollection>}
      * @throws {ClientException}
      */
-    public async getRecent(query?: string, startTime?: string, endTime?: string, sinceId?: string, untilId?: string, sortOrder?: string, expansions?: string, maxResults?: number, fields?: Fields): Promise<TweetCollection> {
+    public async getRecent(query?: string, sortOrder?: string, expansions?: string, pagination?: Pagination, fields?: Fields): Promise<TweetCollection> {
         const url = this.parser.url('/2/tweets/search/recent', {
         });
 
@@ -24,15 +25,12 @@ export class SearchTag extends TagAbstract {
             method: 'GET',
             params: this.parser.query({
                 'query': query,
-                'start_time': startTime,
-                'end_time': endTime,
-                'since_id': sinceId,
-                'until_id': untilId,
                 'sort_order': sortOrder,
                 'expansions': expansions,
-                'max_results': maxResults,
+                'pagination': pagination,
                 'fields': fields,
             }, [
+                'pagination',
                 'fields',
             ]),
         };

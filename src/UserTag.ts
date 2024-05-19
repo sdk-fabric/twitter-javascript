@@ -9,6 +9,7 @@ import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
 import {Fields} from "./Fields";
 import {LikeResponse} from "./LikeResponse";
+import {Pagination} from "./Pagination";
 import {SingleTweet} from "./SingleTweet";
 import {TweetCollection} from "./TweetCollection";
 import {UserCollection} from "./UserCollection";
@@ -20,7 +21,7 @@ export class UserTag extends TagAbstract {
      * @returns {Promise<TweetCollection>}
      * @throws {ClientException}
      */
-    public async getTimeline(userId: string, startTime?: string, endTime?: string, sinceId?: string, untilId?: string, exclude?: string, expansions?: string, maxResults?: number, paginationToken?: string, fields?: Fields): Promise<TweetCollection> {
+    public async getTimeline(userId: string, exclude?: string, expansions?: string, pagination?: Pagination, fields?: Fields): Promise<TweetCollection> {
         const url = this.parser.url('/2/users/:user_id/timelines/reverse_chronological', {
             'user_id': userId,
         });
@@ -29,16 +30,12 @@ export class UserTag extends TagAbstract {
             url: url,
             method: 'GET',
             params: this.parser.query({
-                'start_time': startTime,
-                'end_time': endTime,
-                'since_id': sinceId,
-                'until_id': untilId,
                 'exclude': exclude,
                 'expansions': expansions,
-                'max_results': maxResults,
-                'pagination_token': paginationToken,
+                'pagination': pagination,
                 'fields': fields,
             }, [
+                'pagination',
                 'fields',
             ]),
         };
