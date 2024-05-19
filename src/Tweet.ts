@@ -17,4 +17,6 @@ export interface Tweet {
     reply?: TweetReply
     reply_settings?: string
     text?: string
+    possibly_sensitive?: boolean
+    lang?: string
 }
