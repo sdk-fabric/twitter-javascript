@@ -12,9 +12,88 @@ import {LikeResponse} from "./LikeResponse";
 import {Pagination} from "./Pagination";
 import {SingleTweet} from "./SingleTweet";
 import {TweetCollection} from "./TweetCollection";
+import {User} from "./User";
 import {UserCollection} from "./UserCollection";
 
 export class UserTag extends TagAbstract {
+    /**
+     * Returns a variety of information about one or more users specified by the requested IDs.
+     *
+     * @returns {Promise<UserCollection>}
+     * @throws {ClientException}
+     */
+    public async getAll(ids?: string, expansions?: string, fields?: Fields): Promise<UserCollection> {
+        const url = this.parser.url('/2/users', {
+        });
+
+        let params: AxiosRequestConfig = {
+            url: url,
+            method: 'GET',
+            params: this.parser.query({
+                'ids': ids,
+                'expansions': expansions,
+                'fields': fields,
+            }, [
+                'fields',
+            ]),
+        };
+
+        try {
+            const response = await this.httpClient.request<UserCollection>(params);
+            return response.data;
+        } catch (error) {
+            if (error instanceof ClientException) {
+                throw error;
+            } else if (axios.isAxiosError(error) && error.response) {
+                switch (error.response.status) {
+                    default:
+                        throw new UnknownStatusCodeException('The server returned an unknown status code');
+                }
+            } else {
+                throw new ClientException('An unknown error occurred: ' + String(error));
+            }
+        }
+    }
+
+    /**
+     * Returns a variety of information about a single user specified by the requested ID.
+     *
+     * @returns {Promise<User>}
+     * @throws {ClientException}
+     */
+    public async get(userId: string, expansions?: string, fields?: Fields): Promise<User> {
+        const url = this.parser.url('/2/users/:user_id', {
+            'user_id': userId,
+        });
+
+        let params: AxiosRequestConfig = {
+            url: url,
+            method: 'GET',
+            params: this.parser.query({
+                'expansions': expansions,
+                'fields': fields,
+            }, [
+                'fields',
+            ]),
+        };
+
+        try {
+            const response = await this.httpClient.request<User>(params);
+            return response.data;
+        } catch (error) {
+            if (error instanceof ClientException) {
+                throw error;
+            } else if (axios.isAxiosError(error) && error.response) {
+                switch (error.response.status) {
+                    default:
+                        throw new UnknownStatusCodeException('The server returned an unknown status code');
+                }
+            } else {
+                throw new ClientException('An unknown error occurred: ' + String(error));
+            }
+        }
+    }
+
     /**
      * Allows you to retrieve a collection of the most recent Tweets and Retweets posted by you and users you follow. This endpoint can return every Tweet created on a timeline over the last 7 days as well as the most recent 800 regardless of creation date.
      *
