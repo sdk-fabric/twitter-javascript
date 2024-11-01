@@ -6,6 +6,7 @@
 import axios, {AxiosRequestConfig} from "axios";
 import {ClientAbstract, CredentialsInterface, TokenStoreInterface} from "sdkgen-client"
 import {HttpBearer} from "sdkgen-client"
+import {Anonymous} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
 import {TweetTag} from "./TweetTag";
@@ -87,5 +88,10 @@ export class Client extends ClientAbstract {
     public static build(token: string): Client
     {
         return new Client('https://api.twitter.com', new HttpBearer(token));
+    }
+
+    public static buildAnonymous(): Client
+    {
+        return new Client('https://api.twitter.com', new Anonymous());
     }
 }
