@@ -3,10 +3,13 @@ on:
   workflow_dispatch:
     inputs:
       typehub_message:
+        description: "The TypeHub commit message on commit"
         required: false
       typehub_version:
+        description: "The TypeHub version on tag"
         required: false
       typehub_changelog:
+        description: "The TypeHub changelog on tag"
         required: false
 permissions:
   contents: 'write'
@@ -30,10 +33,11 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
       - run: npm version ${{ inputs.typehub_version }} --no-git-tag-version
       - run: npm install
+      - run: node ./build_index.js
       - run: npm run build
       - run: npm publish --access public
         env:
