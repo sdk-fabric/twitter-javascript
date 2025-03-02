@@ -7,3 +7,4 @@ export interface TweetCreate {
     id?: string
     text?: string
 }
+

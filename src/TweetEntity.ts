@@ -4,6 +4,8 @@
  */
 
 import {TweetDetails} from "./TweetDetails";
+
 export interface TweetEntity {
     data?: TweetDetails
 }
+

@@ -4,6 +4,8 @@
  */
 
 import {HideReply} from "./HideReply";
+
 export interface HideReplyResponse {
     data?: HideReply
 }
+

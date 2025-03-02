@@ -10,3 +10,4 @@ export interface Fields {
     "tweet.fields"?: string
     "user.fields"?: string
 }
+

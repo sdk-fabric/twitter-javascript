@@ -4,6 +4,8 @@
  */
 
 import {User} from "./User";
+
 export interface UserCollection {
     data?: Array<User>
 }
+

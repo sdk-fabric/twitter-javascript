@@ -3,10 +3,11 @@
  * {@link https://sdkgen.app}
  */
 
-import axios, {AxiosRequestConfig} from "axios";
-import {TagAbstract} from "sdkgen-client"
+import {TagAbstract, HttpRequest} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
+import {Errors} from "./Errors";
+import {ErrorsException} from "./ErrorsException";
 import {Fields} from "./Fields";
 import {LikeResponse} from "./LikeResponse";
 import {Pagination} from "./Pagination";
@@ -20,13 +21,14 @@ export class UserTag extends TagAbstract {
      * Returns a variety of information about one or more users specified by the requested IDs.
      *
      * @returns {Promise<UserCollection>}
+     * @throws {ErrorsException}
      * @throws {ClientException}
      */
     public async getAll(ids?: string, expansions?: string, fields?: Fields): Promise<UserCollection> {
         const url = this.parser.url('/2/users', {
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'GET',
             headers: {
@@ -40,26 +42,23 @@ export class UserTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<UserCollection>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as UserCollection;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorsException(await response.json() as Errors);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Returns a variety of information about a single user specified by the requested ID.
      *
      * @returns {Promise<User>}
+     * @throws {ErrorsException}
      * @throws {ClientException}
      */
     public async get(userId: string, expansions?: string, fields?: Fields): Promise<User> {
@@ -67,7 +66,7 @@ export class UserTag extends TagAbstract {
             'user_id': userId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'GET',
             headers: {
@@ -80,26 +79,23 @@ export class UserTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<User>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as User;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorsException(await response.json() as Errors);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Allows you to retrieve a collection of the most recent Tweets and Retweets posted by you and users you follow. This endpoint can return every Tweet created on a timeline over the last 7 days as well as the most recent 800 regardless of creation date.
      *
      * @returns {Promise<TweetCollection>}
+     * @throws {ErrorsException}
      * @throws {ClientException}
      */
     public async getTimeline(userId: string, exclude?: string, expansions?: string, pagination?: Pagination, fields?: Fields): Promise<TweetCollection> {
@@ -107,7 +103,7 @@ export class UserTag extends TagAbstract {
             'user_id': userId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'GET',
             headers: {
@@ -123,26 +119,23 @@ export class UserTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<TweetCollection>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as TweetCollection;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorsException(await response.json() as Errors);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Tweets liked by a user
      *
      * @returns {Promise<TweetCollection>}
+     * @throws {ErrorsException}
      * @throws {ClientException}
      */
     public async getLikedTweets(userId: string, expansions?: string, maxResults?: number, paginationToken?: string, fields?: Fields): Promise<TweetCollection> {
@@ -150,7 +143,7 @@ export class UserTag extends TagAbstract {
             'user_id': userId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'GET',
             headers: {
@@ -165,26 +158,23 @@ export class UserTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<TweetCollection>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as TweetCollection;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorsException(await response.json() as Errors);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Allows a user or authenticated user ID to unlike a Tweet.
      *
      * @returns {Promise<LikeResponse>}
+     * @throws {ErrorsException}
      * @throws {ClientException}
      */
     public async removeLike(userId: string, tweetId: string): Promise<LikeResponse> {
@@ -193,7 +183,7 @@ export class UserTag extends TagAbstract {
             'tweet_id': tweetId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'DELETE',
             headers: {
@@ -203,26 +193,23 @@ export class UserTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<LikeResponse>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as LikeResponse;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorsException(await response.json() as Errors);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Causes the user ID identified in the path parameter to Like the target Tweet.
      *
      * @returns {Promise<LikeResponse>}
+     * @throws {ErrorsException}
      * @throws {ClientException}
      */
     public async createLike(userId: string, payload: SingleTweet): Promise<LikeResponse> {
@@ -230,7 +217,7 @@ export class UserTag extends TagAbstract {
             'user_id': userId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'POST',
             headers: {
@@ -242,33 +229,30 @@ export class UserTag extends TagAbstract {
             data: payload
         };
 
-        try {
-            const response = await this.httpClient.request<LikeResponse>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as LikeResponse;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorsException(await response.json() as Errors);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Returns a variety of information about one or more users specified by their usernames.
      *
      * @returns {Promise<UserCollection>}
+     * @throws {ErrorsException}
      * @throws {ClientException}
      */
     public async findByName(usernames?: string, expansions?: string, fields?: Fields): Promise<UserCollection> {
         const url = this.parser.url('/2/users/by', {
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'GET',
             headers: {
@@ -282,33 +266,30 @@ export class UserTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<UserCollection>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as UserCollection;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorsException(await response.json() as Errors);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Returns information about an authorized user.
      *
      * @returns {Promise<User>}
+     * @throws {ErrorsException}
      * @throws {ClientException}
      */
     public async getMe(expansions?: string, fields?: string): Promise<User> {
         const url = this.parser.url('/2/users/me', {
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'GET',
             headers: {
@@ -320,21 +301,19 @@ export class UserTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<User>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as User;
         }
+
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorsException(await response.json() as Errors);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
     }
+
 
 
 }

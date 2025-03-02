@@ -6,3 +6,4 @@
 export interface TweetGeo {
     place_id?: string
 }
+

@@ -6,3 +6,4 @@
 export interface Like {
     liked?: string
 }
+

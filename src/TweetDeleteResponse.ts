@@ -4,6 +4,8 @@
  */
 
 import {TweetDelete} from "./TweetDelete";
+
 export interface TweetDeleteResponse {
     data?: TweetDelete
 }
+

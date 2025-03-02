@@ -12,3 +12,4 @@ export interface TweetDetails {
     conversation_id?: string
     in_reply_to_user_id?: string
 }
+

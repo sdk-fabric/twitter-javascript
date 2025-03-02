@@ -7,3 +7,4 @@ export interface TweetMedia {
     media_ids?: Array<string>
     tagged_user_ids?: Array<string>
 }
+

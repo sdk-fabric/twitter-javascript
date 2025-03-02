@@ -11,3 +11,4 @@ export interface Pagination {
     max_results?: number
     pagination_token?: string
 }
+

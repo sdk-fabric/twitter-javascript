@@ -7,3 +7,4 @@ export interface TweetPoll {
     duration_minutes?: number
     options?: Array<string>
 }
+

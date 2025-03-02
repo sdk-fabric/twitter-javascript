@@ -4,6 +4,8 @@
  */
 
 import {TweetUsage} from "./TweetUsage";
+
 export interface TweetUsageResponse {
     data?: TweetUsage
 }
+

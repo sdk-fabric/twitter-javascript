@@ -10,3 +10,4 @@ export interface User {
     pinned_tweet_id?: string
     username?: string
 }
+

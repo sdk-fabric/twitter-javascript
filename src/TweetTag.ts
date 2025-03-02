@@ -3,10 +3,11 @@
  * {@link https://sdkgen.app}
  */
 
-import axios, {AxiosRequestConfig} from "axios";
-import {TagAbstract} from "sdkgen-client"
+import {TagAbstract, HttpRequest} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
+import {Errors} from "./Errors";
+import {ErrorsException} from "./ErrorsException";
 import {Fields} from "./Fields";
 import {HideReply} from "./HideReply";
 import {HideReplyResponse} from "./HideReplyResponse";
@@ -22,13 +23,14 @@ export class TweetTag extends TagAbstract {
      * Returns a variety of information about the Tweet specified by the requested ID or list of IDs.
      *
      * @returns {Promise<TweetCollection>}
+     * @throws {ErrorsException}
      * @throws {ClientException}
      */
     public async getAll(ids?: string, expansions?: string, fields?: Fields): Promise<TweetCollection> {
         const url = this.parser.url('/2/tweets', {
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'GET',
             headers: {
@@ -42,26 +44,23 @@ export class TweetTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<TweetCollection>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as TweetCollection;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorsException(await response.json() as Errors);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Returns a variety of information about a single Tweet specified by the requested ID.
      *
      * @returns {Promise<TweetEntity>}
+     * @throws {ErrorsException}
      * @throws {ClientException}
      */
     public async get(tweetId: string, expansions?: string, fields?: Fields): Promise<TweetEntity> {
@@ -69,7 +68,7 @@ export class TweetTag extends TagAbstract {
             'tweet_id': tweetId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'GET',
             headers: {
@@ -82,33 +81,30 @@ export class TweetTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<TweetEntity>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as TweetEntity;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorsException(await response.json() as Errors);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Creates a Tweet on behalf of an authenticated user.
      *
      * @returns {Promise<TweetCreateResponse>}
+     * @throws {ErrorsException}
      * @throws {ClientException}
      */
     public async create(payload: Tweet): Promise<TweetCreateResponse> {
         const url = this.parser.url('/2/tweets', {
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'POST',
             headers: {
@@ -120,26 +116,23 @@ export class TweetTag extends TagAbstract {
             data: payload
         };
 
-        try {
-            const response = await this.httpClient.request<TweetCreateResponse>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as TweetCreateResponse;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorsException(await response.json() as Errors);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Allows a user or authenticated user ID to delete a Tweet.
      *
      * @returns {Promise<TweetDeleteResponse>}
+     * @throws {ErrorsException}
      * @throws {ClientException}
      */
     public async delete(tweetId: string): Promise<TweetDeleteResponse> {
@@ -147,7 +140,7 @@ export class TweetTag extends TagAbstract {
             'tweet_id': tweetId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'DELETE',
             headers: {
@@ -157,26 +150,23 @@ export class TweetTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<TweetDeleteResponse>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as TweetDeleteResponse;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorsException(await response.json() as Errors);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Hides or unhides a reply to a Tweet.
      *
      * @returns {Promise<HideReplyResponse>}
+     * @throws {ErrorsException}
      * @throws {ClientException}
      */
     public async hideReply(tweetId: string, payload: HideReply): Promise<HideReplyResponse> {
@@ -184,7 +174,7 @@ export class TweetTag extends TagAbstract {
             'tweet_id': tweetId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'PUT',
             headers: {
@@ -196,26 +186,23 @@ export class TweetTag extends TagAbstract {
             data: payload
         };
 
-        try {
-            const response = await this.httpClient.request<HideReplyResponse>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as HideReplyResponse;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorsException(await response.json() as Errors);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * Allows you to get information about a Tweet’s liking users.
      *
      * @returns {Promise<UserCollection>}
+     * @throws {ErrorsException}
      * @throws {ClientException}
      */
     public async getLikingUsers(tweetId: string, expansions?: string, maxResults?: number, paginationToken?: string): Promise<UserCollection> {
@@ -223,7 +210,7 @@ export class TweetTag extends TagAbstract {
             'tweet_id': tweetId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'GET',
             headers: {
@@ -236,21 +223,19 @@ export class TweetTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<UserCollection>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as UserCollection;
         }
+
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorsException(await response.json() as Errors);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
     }
+
 
 
 }

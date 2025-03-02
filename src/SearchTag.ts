@@ -3,10 +3,11 @@
  * {@link https://sdkgen.app}
  */
 
-import axios, {AxiosRequestConfig} from "axios";
-import {TagAbstract} from "sdkgen-client"
+import {TagAbstract, HttpRequest} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
+import {Errors} from "./Errors";
+import {ErrorsException} from "./ErrorsException";
 import {Fields} from "./Fields";
 import {Pagination} from "./Pagination";
 import {TweetCollection} from "./TweetCollection";
@@ -14,13 +15,14 @@ import {TweetCollection} from "./TweetCollection";
 export class SearchTag extends TagAbstract {
     /**
      * @returns {Promise<TweetCollection>}
+     * @throws {ErrorsException}
      * @throws {ClientException}
      */
     public async getRecent(query?: string, sortOrder?: string, expansions?: string, pagination?: Pagination, fields?: Fields): Promise<TweetCollection> {
         const url = this.parser.url('/2/tweets/search/recent', {
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'GET',
             headers: {
@@ -37,21 +39,19 @@ export class SearchTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<TweetCollection>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as TweetCollection;
         }
+
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorsException(await response.json() as Errors);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
     }
+
 
 
 }

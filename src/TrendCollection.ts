@@ -4,6 +4,8 @@
  */
 
 import {Trend} from "./Trend";
+
 export interface TrendCollection {
     data?: Array<Trend>
 }
+

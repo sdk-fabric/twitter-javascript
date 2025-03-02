@@ -4,6 +4,8 @@
  */
 
 import {TweetCreate} from "./TweetCreate";
+
 export interface TweetCreateResponse {
     data?: TweetCreate
 }
+

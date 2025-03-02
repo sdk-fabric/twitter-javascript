@@ -3,10 +3,11 @@
  * {@link https://sdkgen.app}
  */
 
-import axios, {AxiosRequestConfig} from "axios";
-import {TagAbstract} from "sdkgen-client"
+import {TagAbstract, HttpRequest} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
+import {Errors} from "./Errors";
+import {ErrorsException} from "./ErrorsException";
 import {TrendCollection} from "./TrendCollection";
 
 export class TrendsTag extends TagAbstract {
@@ -14,6 +15,7 @@ export class TrendsTag extends TagAbstract {
      * The Trends lookup endpoint allow developers to get the Trends for a location, specified using the where-on-earth id (WOEID).
      *
      * @returns {Promise<TrendCollection>}
+     * @throws {ErrorsException}
      * @throws {ClientException}
      */
     public async getByWoeid(woeid: string): Promise<TrendCollection> {
@@ -21,7 +23,7 @@ export class TrendsTag extends TagAbstract {
             'woeid': woeid,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'GET',
             headers: {
@@ -31,21 +33,19 @@ export class TrendsTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<TrendCollection>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as TrendCollection;
         }
+
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorsException(await response.json() as Errors);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
     }
+
 
 
 }

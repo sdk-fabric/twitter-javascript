@@ -4,6 +4,8 @@
  */
 
 import {Like} from "./Like";
+
 export interface LikeResponse {
     data?: Like
 }
+

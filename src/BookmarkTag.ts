@@ -3,11 +3,12 @@
  * {@link https://sdkgen.app}
  */
 
-import axios, {AxiosRequestConfig} from "axios";
-import {TagAbstract} from "sdkgen-client"
+import {TagAbstract, HttpRequest} from "sdkgen-client"
 import {ClientException, UnknownStatusCodeException} from "sdkgen-client";
 
 import {BookmarkResponse} from "./BookmarkResponse";
+import {Errors} from "./Errors";
+import {ErrorsException} from "./ErrorsException";
 import {Fields} from "./Fields";
 import {SingleTweet} from "./SingleTweet";
 import {TweetCollection} from "./TweetCollection";
@@ -17,6 +18,7 @@ export class BookmarkTag extends TagAbstract {
      * Allows you to get an authenticated user's 800 most recent bookmarked Tweets.
      *
      * @returns {Promise<TweetCollection>}
+     * @throws {ErrorsException}
      * @throws {ClientException}
      */
     public async getAll(userId: string, expansions?: string, paginationToken?: string, fields?: Fields): Promise<TweetCollection> {
@@ -24,7 +26,7 @@ export class BookmarkTag extends TagAbstract {
             'user_id': userId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'GET',
             headers: {
@@ -38,24 +40,21 @@ export class BookmarkTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<TweetCollection>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as TweetCollection;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorsException(await response.json() as Errors);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * @returns {Promise<BookmarkResponse>}
+     * @throws {ErrorsException}
      * @throws {ClientException}
      */
     public async create(userId: string, payload: SingleTweet): Promise<BookmarkResponse> {
@@ -63,7 +62,7 @@ export class BookmarkTag extends TagAbstract {
             'user_id': userId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'POST',
             headers: {
@@ -75,24 +74,21 @@ export class BookmarkTag extends TagAbstract {
             data: payload
         };
 
-        try {
-            const response = await this.httpClient.request<BookmarkResponse>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as BookmarkResponse;
         }
-    }
 
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorsException(await response.json() as Errors);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
+    }
     /**
      * @returns {Promise<BookmarkResponse>}
+     * @throws {ErrorsException}
      * @throws {ClientException}
      */
     public async delete(userId: string, tweetId: string): Promise<BookmarkResponse> {
@@ -101,7 +97,7 @@ export class BookmarkTag extends TagAbstract {
             'tweet_id': tweetId,
         });
 
-        let params: AxiosRequestConfig = {
+        let request: HttpRequest = {
             url: url,
             method: 'DELETE',
             headers: {
@@ -111,21 +107,19 @@ export class BookmarkTag extends TagAbstract {
             ]),
         };
 
-        try {
-            const response = await this.httpClient.request<BookmarkResponse>(params);
-            return response.data;
-        } catch (error) {
-            if (error instanceof ClientException) {
-                throw error;
-            } else if (axios.isAxiosError(error) && error.response) {
-                const statusCode = error.response.status;
-
-                throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
-            } else {
-                throw new ClientException('An unknown error occurred: ' + String(error));
-            }
+        const response = await this.httpClient.request(request);
+        if (response.ok) {
+            return await response.json() as BookmarkResponse;
         }
+
+        const statusCode = response.status;
+        if (statusCode >= 0 && statusCode <= 999) {
+            throw new ErrorsException(await response.json() as Errors);
+        }
+
+        throw new UnknownStatusCodeException('The server returned an unknown status code: ' + statusCode);
     }
+
 
 
 }

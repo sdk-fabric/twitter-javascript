@@ -7,6 +7,7 @@ import {TweetGeo} from "./TweetGeo";
 import {TweetMedia} from "./TweetMedia";
 import {TweetPoll} from "./TweetPoll";
 import {TweetReply} from "./TweetReply";
+
 export interface Tweet {
     direct_message_deep_link?: string
     for_super_followers_only?: boolean
@@ -20,3 +21,4 @@ export interface Tweet {
     possibly_sensitive?: boolean
     lang?: string
 }
+
