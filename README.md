@@ -13,7 +13,7 @@ https://app.typehub.cloud/d/sdkfabric/twitter
 const client = Client::build('[access_token]');
 
 // Returns a variety of information about the Tweet specified by the requested ID or list of IDs.
-const response = await client.tweet().getall("ids", "expansions", null);
+const response = await client.tweet().getAll("ids", "expansions", null);
 
 // Returns a variety of information about a single Tweet specified by the requested ID.
 const response = await client.tweet().get("tweet_id", "expansions", null);
@@ -25,53 +25,53 @@ const response = await client.tweet().create(new Tweet());
 const response = await client.tweet().delete("tweet_id");
 
 // Hides or unhides a reply to a Tweet.
-const response = await client.tweet().hidereply("tweet_id", new Hidereply());
+const response = await client.tweet().hideReply("tweet_id", new HideReply());
 
 // Allows you to get information about a Tweet’s liking users.
-const response = await client.tweet().getlikingusers("tweet_id", "expansions", 1, "pagination_token");
+const response = await client.tweet().getLikingUsers("tweet_id", "expansions", 1, "pagination_token");
 
 // The Usage API in the Twitter API v2 allows developers to programmatically retrieve their project usage.
-const response = await client.usage().gettweets();
+const response = await client.usage().getTweets();
 
 // Returns a variety of information about one or more users specified by the requested IDs.
-const response = await client.user().getall("ids", "expansions", null);
+const response = await client.user().getAll("ids", "expansions", null);
 
 // Returns a variety of information about a single user specified by the requested ID.
 const response = await client.user().get("user_id", "expansions", null);
 
 // Allows you to retrieve a collection of the most recent Tweets and Retweets posted by you and users you follow.
-const response = await client.user().gettimeline("user_id", "exclude", "expansions", null, null);
+const response = await client.user().getTimeline("user_id", "exclude", "expansions", null, null);
 
 // Tweets liked by a user.
-const response = await client.user().getlikedtweets("user_id", "expansions", 1, "pagination_token", null);
+const response = await client.user().getLikedTweets("user_id", "expansions", 1, "pagination_token", null);
 
 // Allows a user or authenticated user ID to unlike a Tweet.
-const response = await client.user().removelike("user_id", "tweet_id");
+const response = await client.user().removeLike("user_id", "tweet_id");
 
 // Causes the user ID identified in the path parameter to Like the target Tweet.
-const response = await client.user().createlike("user_id", new SingleTweet());
+const response = await client.user().createLike("user_id", new Single_Tweet());
 
 // Returns a variety of information about one or more users specified by their usernames.
-const response = await client.user().findbyname("usernames", "expansions", null);
+const response = await client.user().findByName("usernames", "expansions", null);
 
 // Returns information about an authorized user.
-const response = await client.user().getme("expansions", "fields");
+const response = await client.user().getMe("expansions", "fields");
 
 // Allows you to get an authenticated user's 800 most recent bookmarked Tweets.
-const response = await client.bookmark().getall("user_id", "expansions", "pagination_token", null);
+const response = await client.bookmark().getAll("user_id", "expansions", "pagination_token", null);
 
-const response = await client.bookmark().create("user_id", new SingleTweet());
+const response = await client.bookmark().create("user_id", new Single_Tweet());
 
 const response = await client.bookmark().delete("user_id", "tweet_id");
 
-const response = await client.search().getrecent("query", "sort_order", "expansions", null, null);
+const response = await client.search().getRecent("query", "sort_order", "expansions", null, null);
 
 // Returns Quote Tweets for a Tweet specified by the requested Tweet ID.
-const response = await client.quote().getall("tweet_id", "exclude", "expansions", 1, "pagination_token", null);
+const response = await client.quote().getAll("tweet_id", "exclude", "expansions", 1, "pagination_token", null);
 
 // The Trends lookup endpoint allow developers to get the Trends for a location, specified using the where-on-earth id (WOEID).
-const response = await client.trends().getbywoeid("woeid");
+const response = await client.trends().getByWoeid("woeid");
 
 // Returns the Retweets for a given Tweet ID.
-const response = await client.retweet().getall("tweet_id", "expansions", 1, null);
+const response = await client.retweet().getAll("tweet_id", "expansions", 1, null);
 ```
